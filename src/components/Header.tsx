@@ -1,5 +1,6 @@
 import React from 'react';
 import { Music, Image as ImageIcon, Film, ShieldCheck, RotateCcw } from 'lucide-react';
+import { KanaderuLogo } from './KanaderuLogo';
 
 interface HeaderProps {
   currentStep: 1 | 2 | 3;
@@ -27,14 +28,14 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-            <Film className="w-5 h-5" />
-          </div>
+          <KanaderuLogo className="w-10 h-10 shrink-0 hover:scale-105 transition-transform" />
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg text-gray-900 tracking-tight">Kanaderu</h1>
+              <h1 className="font-bold text-lg text-gray-900 tracking-tight bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 bg-clip-text text-transparent">
+                Kanaderu
+              </h1>
               <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 border border-indigo-100">
-                MVP v1.0
+                v1.0
               </span>
             </div>
             <p className="text-xs text-gray-500 hidden sm:block">音楽と写真から曲に合わせたムービーを自動生成</p>
