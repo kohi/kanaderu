@@ -1,5 +1,13 @@
 import React from 'react';
-import { Music, Image as ImageIcon, Film, ShieldCheck, RotateCcw, Check } from 'lucide-react';
+import {
+  Music,
+  Image as ImageIcon,
+  Film,
+  ShieldCheck,
+  RotateCcw,
+  Check,
+  HelpCircle,
+} from 'lucide-react';
 import { KanaderuLogo } from './KanaderuLogo';
 
 interface HeaderProps {
@@ -8,6 +16,7 @@ interface HeaderProps {
   hasSong: boolean;
   hasPhotos: boolean;
   onReset: () => void;
+  onOpenGuide: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -16,6 +25,7 @@ export const Header: React.FC<HeaderProps> = ({
   hasSong,
   hasPhotos,
   onReset,
+  onOpenGuide,
 }) => {
   const steps = [
     { number: 1, label: '音楽選択', icon: Music, ready: true },
@@ -84,18 +94,27 @@ export const Header: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Right Action & Privacy Note */}
-        <div className="flex items-center gap-3">
+        {/* Right Action: Help / Guide, Privacy Badge, Reset */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            onClick={onOpenGuide}
+            title="使い方マニュアルを見る"
+            className="flex items-center gap-1 text-xs font-semibold text-[#58534E] hover:text-[#1C1917] bg-[#FFFFFF] border border-[#E5E1D6] px-2.5 py-1.5 rounded-xl hover:bg-[#F4F1EA] transition-colors shadow-2xs"
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
+            <span className="hidden sm:inline">使い方</span>
+          </button>
+
           <div className="hidden lg:flex items-center gap-1.5 text-xs text-[#58534E] bg-[#F4F1EA] border border-[#E5E1D6] px-3 py-1 rounded-full font-medium">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>端末内完結（通信なし）</span>
+            <span>端末内完結</span>
           </div>
 
           {(hasSong || hasPhotos) && (
             <button
               onClick={onReset}
               title="最初からやり直す"
-              className="flex items-center gap-1 text-xs text-[#8E8880] hover:text-rose-600 hover:bg-rose-50/60 px-2.5 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1 text-xs text-[#8E8880] hover:text-rose-600 hover:bg-rose-50/60 px-2 py-1.5 rounded-lg transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">リセット</span>

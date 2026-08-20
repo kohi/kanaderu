@@ -20,6 +20,7 @@ import { Step1Music } from './components/Step1Music';
 import { Step2Photos } from './components/Step2Photos';
 import { Step3Preview } from './components/Step3Preview';
 import { ExportModal } from './components/ExportModal';
+import { UserGuideModal } from './components/UserGuideModal';
 import { ToastContainer } from './components/Toast';
 import type { ToastMessage } from './components/Toast';
 
@@ -27,6 +28,26 @@ export function App() {
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
   const [capability, setCapability] = useState<CapabilityStatus | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  // Startup / In-App User Guide state
+  const [isGuideOpen, setIsGuideOpen] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('kanaderu_hide_guide') !== 'true';
+    } catch (e) {
+      return true;
+    }
+  });
+
+  const handleCloseGuide = (dontShowAgain: boolean) => {
+    setIsGuideOpen(false);
+    if (dontShowAgain) {
+      try {
+        localStorage.setItem('kanaderu_hide_guide', 'true');
+      } catch (e) {
+        // ignore
+      }
+    }
+  };
 
   // Project state
   const [seed, setSeed] = useState<number>(() => Math.floor(Math.random() * 1_000_000));
@@ -221,6 +242,7 @@ export function App() {
         hasSong={!!song}
         hasPhotos={photos.length > 0}
         onReset={handleReset}
+        onOpenGuide={() => setIsGuideOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -269,6 +291,12 @@ export function App() {
           onClose={() => setExportProgress(null)}
         />
       )}
+
+      {/* Startup & In-App User Guide Modal */}
+      <UserGuideModal
+        isOpen={isGuideOpen}
+        onClose={handleCloseGuide}
+      />
 
       {/* Toasts */}
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
