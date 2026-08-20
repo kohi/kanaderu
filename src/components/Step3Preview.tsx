@@ -563,9 +563,19 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
               <Film className="w-4 h-4 text-amber-400" />
               <h3 className="font-bold text-base tracking-tight">MP4ムービー書き出し</h3>
             </div>
-            <p className="text-xs text-[#CDC7B8] mb-5 leading-relaxed">
+            <p className="text-xs text-[#CDC7B8] mb-4 leading-relaxed">
               H.264＋AAC形式で高速エンコードし、LINEやスマートフォン等でそのまま共有できる高画質動画を作成します。
             </p>
+
+            {project.timeline?.hasInsufficientTime ? (
+              <div className="mb-4 p-3 bg-rose-950/60 border border-rose-800 rounded-xl text-xs text-rose-200 leading-relaxed">
+                ⚠️ 写真の表示に必要な秒数が不足しています。ステップ2で写真の枚数または固定秒数を調整してください。
+              </div>
+            ) : project.timeline?.isExceeded ? (
+              <div className="mb-4 p-3 bg-amber-950/60 border border-amber-800 rounded-xl text-xs text-amber-200 leading-relaxed">
+                ⚠️ 写真の枚数が多すぎるか固定秒数が曲の長さを超えているため書き出しできません。ステップ2で調整してください。
+              </div>
+            ) : null}
 
             <button
               onClick={() => {
@@ -573,7 +583,11 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                 setIsPlaying(false);
                 onStartExport();
               }}
-              disabled={!project.timeline || project.timeline.isExceeded}
+              disabled={
+                !project.timeline ||
+                project.timeline.isExceeded ||
+                project.timeline.hasInsufficientTime
+              }
               className="w-full py-3.5 px-6 rounded-2xl bg-white text-[#1C1917] font-bold text-sm shadow-sm hover:bg-[#F4F1EA] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Film className="w-4 h-4 text-amber-600" />

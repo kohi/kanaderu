@@ -30,15 +30,27 @@ export const ExportModal: React.FC<ExportModalProps> = ({
     progress.state === 'muxing';
 
   useEffect(() => {
-    if (isCompleted) {
+    if (isCompleted && progress.downloadUrl) {
       confetti({
         particleCount: 60,
         spread: 60,
         origin: { y: 0.6 },
         colors: ['#EA580C', '#1C1917', '#F59E0B', '#E5E1D6'],
       });
+
+      // Automatically trigger MP4 download once
+      try {
+        const link = document.createElement('a');
+        link.href = progress.downloadUrl;
+        link.download = progress.filename || 'movie.mp4';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (e) {
+        console.error('Auto download failed:', e);
+      }
     }
-  }, [isCompleted]);
+  }, [isCompleted, progress.downloadUrl, progress.filename]);
 
   const formatTime = (ms: number) => {
     const sec = Math.ceil(ms / 1000);
