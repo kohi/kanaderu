@@ -1,10 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import {
   getAudioFadeGain,
   getVideoFadeBlackAlpha,
   getVideoFadeInBlackAlpha,
 } from '../core/audio/fade';
 import { determineVibePreset } from '../core/audio/analyzer';
+import { AudioPreviewPlayer } from '../core/audio/player';
 
 describe('Audio & Video Fade Curves', () => {
   const duration = 20.0; // 20s track
@@ -57,5 +58,34 @@ describe('Vibe Preset Detection', () => {
 
   it('should detect standard vibe for medium values', () => {
     expect(determineVibePreset(115, 0.14)).toBe('standard');
+  });
+});
+
+describe('AudioPreviewPlayer seeking and timing', () => {
+  const mockBuffer = {
+    duration: 60,
+    numberOfChannels: 2,
+    sampleRate: 44100,
+  } as AudioBuffer;
+
+  it('calculates duration based on trimStart and trimEnd correctly', () => {
+    const player = new AudioPreviewPlayer();
+    player.setAudioBuffer(mockBuffer, 10, 45);
+
+    expect(player.duration).toBe(35);
+  });
+
+  it('updates currentTime on seek while paused', () => {
+    const onTimeUpdate = vi.fn();
+    const player = new AudioPreviewPlayer(onTimeUpdate);
+    player.setAudioBuffer(mockBuffer, 5, 25);
+
+    player.seek(12);
+    expect(player.currentTime).toBe(12);
+    expect(onTimeUpdate).toHaveBeenCalledWith(12);
+
+    // Clamps to duration
+    player.seek(50);
+    expect(player.currentTime).toBe(20); // 25 - 5 = 20s
   });
 });

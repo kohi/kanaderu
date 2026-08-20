@@ -36,8 +36,8 @@ export class AudioPreviewPlayer {
   ) {
     this.stop();
     this.buffer = buffer;
-    this.trimStart = trimStart;
-    this.trimEnd = trimEnd !== undefined ? trimEnd : buffer.duration;
+    this.trimStart = Math.max(0, trimStart);
+    this.trimEnd = trimEnd !== undefined ? Math.min(buffer.duration, trimEnd) : buffer.duration;
     this.headFade = headFade;
     this.tailFade = tailFade;
     this.startOffset = 0;
@@ -62,7 +62,8 @@ export class AudioPreviewPlayer {
   }
 
   public async play(): Promise<void> {
-    if (this.isPlaying || !this.buffer) return;
+    if (!this.buffer) return;
+    if (this.isPlaying) return;
 
     if (!this.ctx || this.ctx.state === 'closed') {
       this.ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
@@ -72,20 +73,32 @@ export class AudioPreviewPlayer {
       await this.ctx.resume();
     }
 
-    if (this.startOffset >= this.duration) {
+    if (this.startOffset >= this.duration - 0.05) {
       this.startOffset = 0;
     }
+
+    // Stop any existing audio source
+    this.stopSource();
 
     const source = this.ctx.createBufferSource();
     source.buffer = this.buffer;
 
     const gain = this.ctx.createGain();
-    gain.gain.value = 1.0;
+    const initialGain = getAudioFadeGain(
+      this.startOffset,
+      this.duration,
+      this.headFade,
+      this.tailFade
+    );
+    gain.gain.setValueAtTime(initialGain, this.ctx.currentTime);
 
     source.connect(gain);
     gain.connect(this.ctx.destination);
 
-    const actualBufferStart = this.trimStart + this.startOffset;
+    const actualBufferStart = Math.min(
+      this.buffer.duration - 0.001,
+      Math.max(0, this.trimStart + this.startOffset)
+    );
     const playDuration = Math.max(0, this.duration - this.startOffset);
 
     source.start(0, actualBufferStart, playDuration);
@@ -96,7 +109,8 @@ export class AudioPreviewPlayer {
     this.isPlaying = true;
 
     source.onended = () => {
-      if (this.isPlaying && this.currentTime >= this.duration - 0.05) {
+      // Only trigger if this is still the active sourceNode
+      if (this.sourceNode === source && this.isPlaying) {
         this.stop();
         this.startOffset = 0;
         this.onEndedCallback?.();
@@ -125,10 +139,9 @@ export class AudioPreviewPlayer {
     const clamped = Math.max(0, Math.min(targetMovieTime, this.duration));
     const wasPlaying = this.isPlaying;
 
-    if (wasPlaying) {
-      this.stopSource();
-    }
-
+    this.stopSource();
+    this.stopTicker();
+    this.isPlaying = false; // Reset playing flag so play() starts new audio source seamlessly
     this.startOffset = clamped;
 
     if (wasPlaying) {
