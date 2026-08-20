@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {
   Download,
-  Share2,
   CheckCircle2,
   AlertCircle,
   Loader2,
@@ -47,33 +46,6 @@ export const ExportModal: React.FC<ExportModalProps> = ({
     const s = sec % 60;
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
-
-  const handleShare = async () => {
-    if (!progress.blob || !navigator.share) return;
-    try {
-      const file = new File([progress.blob], progress.filename || 'movie.mp4', {
-        type: 'video/mp4',
-      });
-      await navigator.share({
-        title: progress.filename || 'Kanaderu Movie',
-        files: [file],
-      });
-    } catch (e) {
-      if ((e as Error).name !== 'AbortError') {
-        console.error('Web Share failed:', e);
-      }
-    }
-  };
-
-  const canShare =
-    typeof navigator !== 'undefined' &&
-    !!navigator.share &&
-    !!progress.blob &&
-    (typeof navigator.canShare === 'function'
-      ? navigator.canShare({
-          files: [new File([progress.blob], 'test.mp4', { type: 'video/mp4' })],
-        })
-      : true);
 
   return (
     <div className="fixed inset-0 z-50 bg-[#1C1917]/70 backdrop-blur-xs flex items-center justify-center p-4">
@@ -165,31 +137,25 @@ export const ExportModal: React.FC<ExportModalProps> = ({
               {progress.filename} ({progress.blob ? (progress.blob.size / (1024 * 1024)).toFixed(1) : '0'} MB)
             </p>
 
-            <div className="flex flex-col gap-2.5 mt-6">
+            <div className="flex flex-col gap-3 mt-6">
               {progress.downloadUrl && (
                 <a
                   href={progress.downloadUrl}
                   download={progress.filename || 'movie.mp4'}
-                  className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-[#1C1917] hover:bg-[#292524] text-white text-sm font-semibold shadow-xs transition-all"
+                  className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-[#1C1917] hover:bg-[#292524] text-white text-sm font-bold shadow-xs transition-all hover:scale-[1.01]"
                 >
                   <Download className="w-4 h-4 text-amber-400" />
-                  <span>MP4を保存（ダウンロード）</span>
+                  <span>MP4動画を保存する（ダウンロード）</span>
                 </a>
               )}
 
-              {canShare && (
-                <button
-                  onClick={handleShare}
-                  className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl border border-[#E5E1D6] bg-[#FAF9F5] hover:bg-[#F4F1EA] text-[#1C1917] text-sm font-semibold transition-colors"
-                >
-                  <Share2 className="w-4 h-4" />
-                  <span>LINE・SNS等で共有</span>
-                </button>
-              )}
+              <p className="text-xs text-[#58534E] bg-[#FAF9F5] p-3 rounded-2xl border border-[#E5E1D6] leading-relaxed text-left">
+                💡 <b>共有方法:</b> ダウンロードしたMP4動画は、LINEのトーク画面やInstagram、X（旧Twitter）、TikTok等にそのままドラッグ＆ドロップまたはファイル添付で送信できます。
+              </p>
 
               <button
                 onClick={onClose}
-                className="py-2.5 px-4 text-xs font-medium text-[#8E8880] hover:text-[#1C1917] transition-colors"
+                className="py-2 px-4 text-xs font-medium text-[#8E8880] hover:text-[#1C1917] transition-colors"
               >
                 プレビュー画面に戻る
               </button>
