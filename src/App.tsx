@@ -210,7 +210,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-gray-900 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#FAF9F5] text-[#1C1917] flex flex-col selection:bg-amber-500 selection:text-white">
       {/* Capability Warning Banner */}
       <BrowserBanner status={capability} />
 

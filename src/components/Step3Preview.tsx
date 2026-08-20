@@ -240,26 +240,26 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
   ];
 
   return (
-    <div className="max-w-5xl mx-auto py-8 px-4">
-      {/* Header */}
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6">
+      {/* Header & Aspect Switch */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#1C1917] tracking-tight">
             ステップ 3：プレビューと書き出し
           </h2>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-[#58534E] text-sm mt-1.5">
             曲のリズムに合わせてKen Burns演出とトランジション、音声フェードが適用されています。
           </p>
         </div>
 
         {/* Aspect Ratio Switch */}
-        <div className="flex items-center bg-gray-100 p-1 rounded-2xl border border-gray-200 text-xs font-semibold">
+        <div className="flex items-center bg-[#F4F1EA] p-1 rounded-2xl border border-[#E5E1D6] text-xs font-semibold">
           <button
             onClick={() => onAspectChange('16:9')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all ${
               project.aspectRatio === '16:9'
-                ? 'bg-white text-indigo-700 shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-[#FFFFFF] text-[#1C1917] shadow-xs'
+                : 'text-[#58534E] hover:text-[#1C1917]'
             }`}
           >
             <Monitor className="w-3.5 h-3.5" />
@@ -269,8 +269,8 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
             onClick={() => onAspectChange('9:16')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all ${
               project.aspectRatio === '9:16'
-                ? 'bg-white text-indigo-700 shadow-xs'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-[#FFFFFF] text-[#1C1917] shadow-xs'
+                : 'text-[#58534E] hover:text-[#1C1917]'
             }`}
           >
             <Smartphone className="w-3.5 h-3.5" />
@@ -284,7 +284,7 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
         <div className="lg:col-span-8 flex flex-col items-center">
           {/* Canvas Container */}
           <div
-            className={`relative bg-black rounded-3xl overflow-hidden shadow-xl border border-gray-800 flex items-center justify-center ${
+            className={`relative bg-[#09090B] rounded-3xl overflow-hidden shadow-md border border-[#27272A] flex items-center justify-center ${
               project.aspectRatio === '16:9'
                 ? 'w-full aspect-16/9'
                 : 'w-[320px] sm:w-[360px] aspect-9/16 max-h-[560px]'
@@ -300,30 +300,30 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
             {!isPlaying && (
               <div
                 onClick={togglePlay}
-                className="absolute inset-0 bg-black/30 flex items-center justify-center cursor-pointer transition-opacity"
+                className="absolute inset-0 bg-black/35 flex items-center justify-center cursor-pointer transition-opacity"
               >
-                <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-md text-gray-900 flex items-center justify-center shadow-2xl pl-1 hover:scale-110 transition-transform">
-                  <Play className="w-8 h-8 fill-current" />
+                <div className="w-16 h-16 rounded-full bg-white/95 backdrop-blur-md text-[#1C1917] flex items-center justify-center shadow-lg pl-1 hover:scale-105 transition-transform">
+                  <Play className="w-7 h-7 fill-current" />
                 </div>
               </div>
             )}
 
             {/* Vibe overlay badge */}
-            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5">
+            <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-mono font-medium flex items-center gap-1.5 border border-white/10">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>{PRESET_CONFIGS[project.preset] ? presetOptions.find(p => p.id === project.preset)?.label : '演出'}</span>
               <span className="opacity-40">•</span>
-              <span className="text-indigo-300">
+              <span className="text-amber-300">
                 {transitionStyleOptions.find(t => t.id === project.transitionStyle)?.label || '演出'}
               </span>
             </div>
           </div>
 
           {/* Player Controller Bar */}
-          <div className="w-full bg-white rounded-2xl border border-gray-200 p-4 shadow-sm mt-4">
+          <div className="w-full bg-[#FFFFFF] rounded-2xl border border-[#E5E1D6] p-4 shadow-xs mt-4">
             {/* Seekbar */}
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-xs font-mono text-gray-600 font-semibold w-14">
+              <span className="text-xs font-mono font-bold text-[#1C1917] w-14">
                 {formatTime(currentTime)}
               </span>
 
@@ -334,10 +334,10 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                 step={0.05}
                 value={currentTime}
                 onChange={handleSeekChange}
-                className="w-full accent-indigo-600 cursor-pointer h-2 bg-gray-100 rounded-lg"
+                className="w-full accent-[#1C1917] cursor-pointer h-2 bg-[#F4F1EA] rounded-lg"
               />
 
-              <span className="text-xs font-mono text-gray-400 w-14 text-right">
+              <span className="text-xs font-mono text-[#8E8880] w-14 text-right">
                 {formatTime(totalDuration)}
               </span>
             </div>
@@ -347,16 +347,16 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   onClick={togglePlay}
-                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#1C1917] hover:bg-[#292524] text-white text-xs font-semibold rounded-xl shadow-xs transition-colors"
                 >
                   {isPlaying ? (
                     <>
-                      <Pause className="w-4 h-4" />
+                      <Pause className="w-3.5 h-3.5 text-amber-400" />
                       <span>一時停止 (Space)</span>
                     </>
                   ) : (
                     <>
-                      <Play className="w-4 h-4 fill-current" />
+                      <Play className="w-3.5 h-3.5 fill-current" />
                       <span>再生 (Space)</span>
                     </>
                   )}
@@ -365,14 +365,14 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                 <button
                   onClick={handleRestart}
                   title="最初から再生"
-                  className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition-colors"
+                  className="p-2 text-[#58534E] hover:text-[#1C1917] hover:bg-[#F4F1EA] rounded-xl transition-colors"
                 >
                   <RotateCcw className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="text-xs text-gray-400 flex items-center gap-1.5">
-                <Volume2 className="w-4 h-4 text-gray-500" />
+              <div className="text-xs font-mono text-[#8E8880] flex items-center gap-2">
+                <Volume2 className="w-3.5 h-3.5 text-[#58534E]" />
                 <span>BPM: {song?.bpm}</span>
                 <span>• 写真 {project.photos.length} 枚</span>
               </div>
@@ -381,22 +381,22 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
         </div>
 
         {/* Right: Settings & Export CTA Panel */}
-        <div className="lg:col-span-4 flex flex-col gap-5">
+        <div className="lg:col-span-4 flex flex-col gap-4">
           {/* Fade Settings Card */}
-          <div className="bg-white rounded-3xl border border-gray-200 p-5 shadow-sm">
+          <div className="bg-[#FFFFFF] rounded-3xl border border-[#E5E1D6] p-5 shadow-xs">
             <div className="flex items-center gap-2 mb-2">
-              <Sliders className="w-4 h-4 text-indigo-600" />
-              <h3 className="font-bold text-gray-900 text-sm">楽曲・映像のフェード設定</h3>
+              <Sliders className="w-4 h-4 text-[#1C1917]" />
+              <h3 className="font-bold text-[#1C1917] text-sm">楽曲・映像のフェード設定</h3>
             </div>
-            <p className="text-xs text-gray-500 mb-3.5">
+            <p className="text-xs text-[#58534E] mb-3.5">
               動画の最初と最後の自然なフェードイン・フェードアウトを設定できます。
             </p>
 
-            <div className="flex flex-col gap-3.5">
+            <div className="flex flex-col gap-3">
               {/* Head Fade-in */}
-              <div className="p-3 bg-gray-50/70 rounded-2xl border border-gray-100">
+              <div className="p-3 bg-[#FAF9F5] rounded-2xl border border-[#E5E1D6]">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-gray-800">曲頭のフェードイン</span>
+                  <span className="text-xs font-bold text-[#1C1917]">曲頭のフェードイン</span>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -404,7 +404,7 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                       onChange={(e) => onFadeChange({ fadeIn: e.target.checked })}
                       className="sr-only peer"
                     />
-                    <div className="w-8 h-4.5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    <div className="w-8 h-4.5 bg-[#CDC7B8] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-[#1C1917]"></div>
                   </label>
                 </div>
 
@@ -415,13 +415,13 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                         key={sec}
                         type="button"
                         onClick={() => onFadeChange({ fadeInDuration: sec })}
-                        className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-semibold transition-all ${
+                        className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-mono font-semibold transition-all ${
                           project.fadeInDuration === sec
-                            ? 'bg-indigo-600 text-white shadow-xs'
-                            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                            ? 'bg-[#1C1917] text-white shadow-xs'
+                            : 'bg-[#FFFFFF] text-[#58534E] hover:bg-[#F4F1EA] border border-[#E5E1D6]'
                         }`}
                       >
-                        {sec}秒
+                        {sec}s
                       </button>
                     ))}
                   </div>
@@ -429,11 +429,11 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
               </div>
 
               {/* Tail Fade-out */}
-              <div className="p-3 bg-gray-50/70 rounded-2xl border border-gray-100">
+              <div className="p-3 bg-[#FAF9F5] rounded-2xl border border-[#E5E1D6]">
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <span className="text-xs font-bold text-gray-800">曲末のフェードアウト</span>
-                    <span className="text-[10px] text-gray-400 block">（音声＆映像を黒へフェード）</span>
+                    <span className="text-xs font-bold text-[#1C1917]">曲末のフェードアウト</span>
+                    <span className="text-[10px] text-[#8E8880] block">（音声＆映像を黒へフェード）</span>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -442,7 +442,7 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                       onChange={(e) => onFadeChange({ fadeOut: e.target.checked })}
                       className="sr-only peer"
                     />
-                    <div className="w-8 h-4.5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                    <div className="w-8 h-4.5 bg-[#CDC7B8] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-[#1C1917]"></div>
                   </label>
                 </div>
 
@@ -453,13 +453,13 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                         key={sec}
                         type="button"
                         onClick={() => onFadeChange({ fadeOutDuration: sec })}
-                        className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-semibold transition-all ${
+                        className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-mono font-semibold transition-all ${
                           project.fadeOutDuration === sec
-                            ? 'bg-indigo-600 text-white shadow-xs'
-                            : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                            ? 'bg-[#1C1917] text-white shadow-xs'
+                            : 'bg-[#FFFFFF] text-[#58534E] hover:bg-[#F4F1EA] border border-[#E5E1D6]'
                         }`}
                       >
-                        {sec}秒
+                        {sec}s
                       </button>
                     ))}
                   </div>
@@ -469,12 +469,12 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
           </div>
 
           {/* Transition Style Selector */}
-          <div className="bg-white rounded-3xl border border-gray-200 p-5 shadow-sm">
+          <div className="bg-[#FFFFFF] rounded-3xl border border-[#E5E1D6] p-5 shadow-xs">
             <div className="flex items-center gap-2 mb-2">
-              <Zap className="w-4 h-4 text-amber-500" />
-              <h3 className="font-bold text-gray-900 text-sm">トランジション（切り替え効果）</h3>
+              <Zap className="w-4 h-4 text-amber-600" />
+              <h3 className="font-bold text-[#1C1917] text-sm">トランジション（切り替え効果）</h3>
             </div>
-            <p className="text-xs text-gray-500 mb-3">
+            <p className="text-xs text-[#58534E] mb-3">
               写真の切り替え演出をワンクリックで変更できます。
             </p>
 
@@ -488,8 +488,8 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                     onClick={() => onTransitionStyleChange(opt.id)}
                     className={`text-left p-2.5 rounded-2xl border transition-all ${
                       isSelected
-                        ? 'border-amber-500 bg-amber-50/60 ring-1 ring-amber-500 shadow-xs'
-                        : 'border-gray-200 hover:border-amber-300 hover:bg-gray-50/50'
+                        ? 'border-amber-600 bg-amber-50/40 ring-1 ring-amber-600 shadow-xs'
+                        : 'border-[#E5E1D6] hover:border-[#CDC7B8] hover:bg-[#FAF9F5]'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -497,25 +497,25 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                         <div
                           className={`w-6 h-6 rounded-lg flex items-center justify-center ${
                             isSelected
-                              ? 'bg-amber-500 text-white'
-                              : 'bg-gray-100 text-gray-600'
+                              ? 'bg-amber-600 text-white'
+                              : 'bg-[#F4F1EA] text-[#58534E]'
                           }`}
                         >
                           <Icon className="w-3.5 h-3.5" />
                         </div>
-                        <span className="font-bold text-xs text-gray-900">{opt.label}</span>
+                        <span className="font-bold text-xs text-[#1C1917]">{opt.label}</span>
                       </div>
                       <span
                         className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${
                           isSelected
                             ? 'bg-amber-600 text-white'
-                            : 'bg-gray-100 text-gray-500'
+                            : 'bg-[#F4F1EA] text-[#8E8880]'
                         }`}
                       >
                         {opt.badge}
                       </span>
                     </div>
-                    <p className="text-[10px] text-gray-500 mt-1 pl-8 leading-tight">{opt.desc}</p>
+                    <p className="text-[11px] text-[#58534E] mt-1 pl-8 leading-relaxed">{opt.desc}</p>
                   </button>
                 );
               })}
@@ -523,10 +523,10 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
           </div>
 
           {/* Preset Selector */}
-          <div className="bg-white rounded-3xl border border-gray-200 p-5 shadow-sm">
+          <div className="bg-[#FFFFFF] rounded-3xl border border-[#E5E1D6] p-5 shadow-xs">
             <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
-              <h3 className="font-bold text-gray-900 text-sm">雰囲気プリセット</h3>
+              <Sparkles className="w-4 h-4 text-[#1C1917]" />
+              <h3 className="font-bold text-[#1C1917] text-sm">雰囲気プリセット</h3>
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -538,19 +538,19 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                     onClick={() => onPresetChange(opt.id)}
                     className={`text-left p-2.5 rounded-2xl border transition-all ${
                       isSelected
-                        ? 'border-indigo-600 bg-indigo-50/70 ring-1 ring-indigo-600'
-                        : 'border-gray-200 hover:border-indigo-300 hover:bg-gray-50/50'
+                        ? 'border-[#1C1917] bg-[#1C1917] text-white shadow-xs'
+                        : 'border-[#E5E1D6] hover:border-[#CDC7B8] hover:bg-[#FAF9F5] text-[#1C1917]'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-xs text-gray-900">{opt.label}</span>
+                      <span className="font-bold text-xs">{opt.label}</span>
                       {isSelected && (
-                        <span className="text-[9px] uppercase font-bold bg-indigo-600 text-white px-2 py-0.5 rounded-full">
+                        <span className="text-[9px] uppercase font-bold bg-white/20 text-white px-2 py-0.5 rounded-full">
                           選択中
                         </span>
                       )}
                     </div>
-                    <p className="text-[10px] text-gray-500 mt-0.5">{opt.sub}</p>
+                    <p className={`text-[10px] mt-0.5 ${isSelected ? 'text-white/80' : 'text-[#8E8880]'}`}>{opt.sub}</p>
                   </button>
                 );
               })}
@@ -558,13 +558,13 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
           </div>
 
           {/* Export Primary Action Card */}
-          <div className="bg-gradient-to-br from-indigo-900 to-violet-950 rounded-3xl p-6 text-white shadow-xl">
-            <div className="flex items-center gap-2 mb-2">
-              <Film className="w-5 h-5 text-indigo-300" />
-              <h3 className="font-bold text-base">MP4ムービー書き出し</h3>
+          <div className="bg-[#1C1917] rounded-3xl p-6 text-white shadow-md border border-[#27272A]">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Film className="w-4 h-4 text-amber-400" />
+              <h3 className="font-bold text-base tracking-tight">MP4ムービー書き出し</h3>
             </div>
-            <p className="text-xs text-indigo-200 mb-5 leading-relaxed">
-              H.264＋AAC形式で書き出し、LINEやiPhone等でそのまま再生・共有できる高画質動画を作成します。
+            <p className="text-xs text-[#CDC7B8] mb-5 leading-relaxed">
+              H.264＋AAC形式で高速エンコードし、LINEやスマートフォン等でそのまま共有できる高画質動画を作成します。
             </p>
 
             <button
@@ -574,13 +574,13 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
                 onStartExport();
               }}
               disabled={!project.timeline || project.timeline.isExceeded}
-              className="w-full py-4 px-6 rounded-2xl bg-white text-indigo-950 font-bold text-sm shadow-lg hover:bg-indigo-50 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3.5 px-6 rounded-2xl bg-white text-[#1C1917] font-bold text-sm shadow-sm hover:bg-[#F4F1EA] transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              <Film className="w-4 h-4 text-indigo-600" />
+              <Film className="w-4 h-4 text-amber-600" />
               <span>MP4を書き出す</span>
             </button>
 
-            <p className="text-[11px] text-indigo-300/80 text-center mt-3">
+            <p className="text-[11px] font-mono text-[#8E8880] text-center mt-3">
               完全クライアント内処理 • サーバー送信なし
             </p>
           </div>
@@ -592,7 +592,7 @@ export const Step3Preview: React.FC<Step3PreviewProps> = ({
               setIsPlaying(false);
               onPrev();
             }}
-            className="flex items-center justify-center gap-1.5 py-3 px-4 rounded-2xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-100 transition-colors"
+            className="flex items-center justify-center gap-1.5 py-3 px-4 rounded-2xl border border-[#E5E1D6] text-xs font-semibold text-[#58534E] hover:text-[#1C1917] hover:bg-[#F4F1EA] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>写真の変更（ステップ2へ戻る）</span>
