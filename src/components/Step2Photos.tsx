@@ -14,9 +14,18 @@ import {
   X,
   Info,
   Check,
+  Wand2,
+  Shuffle,
+  ArrowUpDown,
+  Sparkles,
 } from 'lucide-react';
 import type { PhotoItem, SongData, Timeline } from '../types/project';
 import { loadAndProcessImage } from '../core/utils/imageLoader';
+import {
+  orderPhotosBySongFlow,
+  shufflePhotos,
+  sortPhotosByName,
+} from '../core/utils/photoAnalyzer';
 
 interface Step2PhotosProps {
   song: SongData;
@@ -25,6 +34,7 @@ interface Step2PhotosProps {
   onPhotosChange: (photos: PhotoItem[]) => void;
   onPrev: () => void;
   onNext: () => void;
+  onNotify?: (type: 'success' | 'info', title: string, message?: string) => void;
   onError: (title: string, message: string, detail?: string) => void;
 }
 
@@ -35,6 +45,7 @@ export const Step2Photos: React.FC<Step2PhotosProps> = ({
   onPhotosChange,
   onPrev,
   onNext,
+  onNotify,
   onError,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
@@ -99,6 +110,38 @@ export const Step2Photos: React.FC<Step2PhotosProps> = ({
     if (confirm('すべての写真を削除しますか？')) {
       onPhotosChange([]);
       setEditingPhotoIndex(null);
+    }
+  };
+
+  // Reordering helpers
+  const handleAutoOrderBySong = () => {
+    if (photos.length <= 1) return;
+    const reordered = orderPhotosBySongFlow(photos, song);
+    onPhotosChange(reordered);
+    if (onNotify) {
+      onNotify(
+        'success',
+        '曲の流れに合わせた並べ替え完了',
+        'サビや盛り上がりに鮮やかな写真が配置されるよう自動調整しました。'
+      );
+    }
+  };
+
+  const handleShuffle = () => {
+    if (photos.length <= 1) return;
+    const reordered = shufflePhotos(photos);
+    onPhotosChange(reordered);
+    if (onNotify) {
+      onNotify('info', 'シャッフル完了', '写真の順番をランダムに入れ替えました。');
+    }
+  };
+
+  const handleSortByName = () => {
+    if (photos.length <= 1) return;
+    const reordered = sortPhotosByName(photos);
+    onPhotosChange(reordered);
+    if (onNotify) {
+      onNotify('info', 'ファイル名順に並べ替えました');
     }
   };
 
@@ -173,7 +216,7 @@ export const Step2Photos: React.FC<Step2PhotosProps> = ({
             ステップ 2：写真の配置と秒数指定
           </h2>
           <p className="text-[#58534E] text-sm mt-1.5">
-            ドラッグ＆ドロップで順番を並べ替えます。写真をクリックして表示秒数を固定（ピン留め）できます。
+            ドラッグ＆ドロップで自由に並べ替えできます。曲に合わせた自動順やシャッフルもワンクリックで行えます。
           </p>
         </div>
 
@@ -210,6 +253,48 @@ export const Step2Photos: React.FC<Step2PhotosProps> = ({
           )}
         </div>
       </div>
+
+      {/* Smart Ordering Toolbar (when photos are present) */}
+      {photos.length > 1 && (
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#E5E1D6] p-3 mb-6 shadow-xs flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#1C1917]">
+            <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>並べ替えアシスト:</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Auto Order by Song Flow */}
+            <button
+              onClick={handleAutoOrderBySong}
+              title="曲のサビ・盛り上がりに合わせて写真の順番をドラマチックに自動配置します"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#FAF9F5] hover:bg-[#F4F1EA] text-[#1C1917] border border-[#E5E1D6] hover:border-[#1C1917] text-xs font-semibold transition-all shadow-xs"
+            >
+              <Wand2 className="w-3.5 h-3.5 text-amber-600" />
+              <span>曲の流れに合わせる</span>
+            </button>
+
+            {/* Random Shuffle */}
+            <button
+              onClick={handleShuffle}
+              title="写真の順番をランダムにシャッフルします"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#FAF9F5] hover:bg-[#F4F1EA] text-[#58534E] hover:text-[#1C1917] border border-[#E5E1D6] text-xs font-semibold transition-colors"
+            >
+              <Shuffle className="w-3.5 h-3.5" />
+              <span>シャッフル</span>
+            </button>
+
+            {/* Sort by Name */}
+            <button
+              onClick={handleSortByName}
+              title="ファイル名順（撮影・連番順）に並べ替えます"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#FAF9F5] hover:bg-[#F4F1EA] text-[#8E8880] hover:text-[#1C1917] border border-[#E5E1D6] text-xs font-medium transition-colors"
+            >
+              <ArrowUpDown className="w-3.5 h-3.5" />
+              <span>名前順</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Dynamic Messages Banners (from timeline calculation) */}
       {timeline && timeline.messages.length > 0 && (

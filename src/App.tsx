@@ -242,6 +242,7 @@ export function App() {
             onPhotosChange={setPhotos}
             onPrev={() => setCurrentStep(1)}
             onNext={() => setCurrentStep(3)}
+            onNotify={(type, title, msg) => addToast(type, title, msg)}
             onError={(title, msg, detail) => addToast('error', title, msg, detail)}
           />
         )}

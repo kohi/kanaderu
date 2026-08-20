@@ -43,6 +43,14 @@ export interface SongData {
   detectedPreset: PresetType;
 }
 
+export interface PhotoVisualMetrics {
+  brightness: number; // 0.0 - 1.0
+  saturation: number; // 0.0 - 1.0
+  warmth: number; // 0.0 - 1.0 (warm vs cool tones)
+  contrast: number; // 0.0 - 1.0
+  energyScore: number; // 0.0 - 1.0 (composite vibrancy & contrast)
+}
+
 export interface PhotoItem {
   id: string;
   file: File;
@@ -52,6 +60,7 @@ export interface PhotoItem {
   previewUrl: string;
   bitmap: ImageBitmap | HTMLCanvasElement;
   lockedDuration?: number; // Optional fixed display duration in seconds (undefined = auto)
+  visualMetrics?: PhotoVisualMetrics;
 }
 
 export type PanDirection = 'left' | 'right' | 'up' | 'down' | 'up-left' | 'up-right' | 'down-left' | 'down-right' | 'center';
